@@ -1,0 +1,17 @@
+.container {
+  padding-inline: var(--padding-inline);
+
+  @include adaptiveValue('--padding-inline', 60, 40, $containerWidth, $pc);
+
+  @include mdQuery(0, $pc) {
+    @include adaptiveValue('--padding-inline', 40, 20, $pc, $mobile);
+  }
+
+  @include mobile {
+    @include adaptiveValue('--padding-inline', 20, 15, $mobile, $mobileSmall);
+  }
+
+  @include mobileSmall {
+    --padding-inline: #{rem(15)};
+  }
+}
