@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  justify-content: center;
+
+  &__wrapper {
+    max-width: rem(1440);
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // .header__title
+  &__title {
+    font-size: 20px;
+    text-transform: uppercase;
+  }
+  // .header__button
+  &__button {
+  }
+}
