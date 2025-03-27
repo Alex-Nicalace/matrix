@@ -1,0 +1,29 @@
+@font-face {
+  font-family: 'PP Neue Machina';
+  src: url('../assets/fonts/PPNeueMachina-Regular.woff2') format('woff2'),
+    url('../assets/fonts/PPNeueMachina-Regular.woff') format('woff'),
+    url('../assets/fonts/PPNeueMachina-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Machina';
+  src: url('../assets/fonts/PPNeueMachina-Light.woff2') format('woff2'),
+    url('../assets/fonts/PPNeueMachina-Light.woff') format('woff'),
+    url('../assets/fonts/PPNeueMachina-Light.ttf') format('ttf');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'PP Neue Machina';
+  src: url('../assets/fonts/PPNeueMachina-Ultrabold.woff2') format('woff2'),
+    url('../assets/fonts/PPNeueMachina-Ultrabold.woff') format('woff'),
+    url('../assets/fonts/PPNeueMachina-Ultrabold.ttf') format('ttf');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

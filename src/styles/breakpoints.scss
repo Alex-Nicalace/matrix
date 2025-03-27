@@ -1,0 +1,85 @@
+@use './variables.scss' as *;
+@use './functions.scss' as *;
+@use 'sass:map';
+
+// указанное устройство и выше -----------------------------------
+@mixin mobileSmall-u {
+  @media (min-width: map.get($breakpoints, mobileSmall)) {
+    @content;
+  }
+}
+
+@mixin mobile-u {
+  @media (min-width: map.get($breakpoints, mobile)) {
+    @content;
+  }
+}
+
+@mixin tablet-u {
+  @media (min-width: map.get($breakpoints, tablet)) {
+    @content;
+  }
+}
+
+// указанное устройство и выше -----------------------------------
+@mixin mobileSmall {
+  @media (max-width: map.get($breakpoints, mobileSmall)) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (min-width: map.get($breakpoints, mobileSmall)) and (max-width: map.get($breakpoints, mobile)) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: map.get($breakpoints, mobile)) and (max-width: map.get($breakpoints, tablet)) {
+    @content;
+  }
+}
+
+@mixin pc {
+  @media (min-width: map.get($breakpoints, pc)) {
+    @content;
+  }
+}
+
+// указанное устройство и ниже -----------------------------------
+@mixin mobile-d {
+  @media (max-width: map.get($breakpoints, mobile)) {
+    @content;
+  }
+}
+
+@mixin tablet-d {
+  @media (max-width: map.get($breakpoints, tablet)) {
+    @content;
+  }
+}
+
+@mixin pc-d {
+  @media (max-width: map.get($breakpoints, pc)) {
+    @content;
+  }
+}
+
+// указанный диапазон -----------------------------------
+@mixin mdQuery($from: 0, $to: 0) {
+  @if ($from > 0 and $to > 0) {
+    @media (min-width: em($from)) and (max-width: em($to)) {
+      @content;
+    }
+  } @else if ($from > 0) {
+    @media (min-width: em($from)) {
+      @content;
+    }
+  } @else if ($to > 0) {
+    @media (max-width: em($to)) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}

@@ -1,0 +1,33 @@
+// функции SCSS
+@use 'sass:math';
+
+//* Percent
+@function percent($px, $from) {
+  $result: math.div($px, $from) * 100%;
+  @return $result;
+}
+//* REM
+@function rem($px) {
+  $result: math.div($px, 16) + rem;
+  @return $result;
+}
+//* EM
+@function em($px, $current: 16) {
+  $result: math.div($px, $current) + em;
+  @return $result;
+}
+//* vw
+@function vw($px, $from: $maxWidth) {
+  $result: math.div($px, $from) * 100vw;
+  @return $result;
+}
+//* vh
+@function vh($px, $from) {
+  $result: math.div($px, $from) * 100vh;
+  @return $result;
+}
+//* fr
+@function fr($px, $from) {
+  $result: math.div($px, $from) * 1fr;
+  @return $result;
+}
