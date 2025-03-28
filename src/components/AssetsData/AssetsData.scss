@@ -1,2 +1,7 @@
 .assets-data {
+  // .assets-data__table
+  &__table {
+    max-width: rem(1440);
+    margin: 0 auto;
+  }
 }

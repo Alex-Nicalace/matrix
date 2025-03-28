@@ -1,0 +1,40 @@
+.table {
+  overflow: auto;
+  width: 100%;
+
+  // .table__table
+  &__table {
+    width: 100%;
+    table-layout: fixed;
+
+    @include mobile-d {
+      table-layout: auto;
+    }
+  }
+
+  // .table__head
+  &__head {
+  }
+  // .table__body
+  &__body {
+  }
+  // .table__row
+  &__row {
+    // .table__row_head
+    &_head {
+      // display: flex;
+      // justify-content: space-between;
+    }
+  }
+  // .table__cell
+  &__cell {
+    text-align: center;
+    white-space: nowrap;
+
+    @include adaptiveValue('padding', 20, 5);
+    // .table__cell_head
+    &_head {
+      white-space: wrap;
+    }
+  }
+}
