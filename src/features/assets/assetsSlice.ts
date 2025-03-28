@@ -13,7 +13,7 @@ const initialState: TAsset[] = [
     percentageOfPortfolio: 66.75639157504307,
   },
   {
-    id: 'b987ea65-277d-4ec7-9608-f81ddb47d743',
+    id: 'y987ea65-277d-4ec7-9608-f81ddb47d743',
     name: 'ETH',
     symbol: 'ETHUSDT',
     quantity: 10,

@@ -1,77 +1,47 @@
-import { createElement } from 'react';
 import classNames from 'classnames';
-import { TRowProps, TTableProps } from './Table.types';
+import { TTableProps } from './Table.types';
 import './Table.scss';
 
-function Table<T extends React.ReactNode>({
+function Table({
   className,
   columnNames,
-  renderCellHead,
   data,
-  renderDataCell,
   isCardView,
+  uniqueField,
   ...props
-}: TTableProps<T>) {
+}: TTableProps) {
   return (
     <div
       className={classNames('table', isCardView && 'table_card', className)}
       {...props}
     >
       <table className="table__table">
-        {columnNames?.length && (
-          <thead className="table__head">
-            <Row data={columnNames} isHeadRow render={renderCellHead} />
-          </thead>
-        )}
+        <thead className="table__head">
+          <tr className="table__row table__row_head">
+            {columnNames.map((item) => (
+              <th key={item.field} className="table__cell table__cell_head">
+                {item.title ?? item.field}
+              </th>
+            ))}
+          </tr>
+        </thead>
         <tbody className="table__body">
-          {data.map((item, index) => (
-            <Row
-              key={index}
-              data={item}
-              render={renderDataCell}
-              columnNames={isCardView ? columnNames : null}
-            />
+          {data.map((row) => (
+            <tr key={row[uniqueField]} className="table__row">
+              {columnNames.map((col) => (
+                <td
+                  key={col.field}
+                  className="table__cell"
+                  data-label={isCardView ? col.title ?? col.field : null}
+                >
+                  {row[col.field]}
+                </td>
+              ))}
+            </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
-}
-
-function Row<T extends React.ReactNode>({
-  className,
-  data,
-  columnNames,
-  isHeadRow,
-  render,
-  ...props
-}: TRowProps<T>) {
-  const tag = isHeadRow ? 'th' : 'td';
-
-  return (
-    <tr
-      className={classNames(
-        'table__row',
-        isHeadRow && 'table__row_head',
-        className
-      )}
-      {...props}
-    >
-      {data.map((item, index) =>
-        createElement(
-          tag,
-          {
-            key: index,
-            className: classNames(
-              'table__cell',
-              isHeadRow && 'table__cell_head'
-            ),
-            'data-label': columnNames?.[index],
-          },
-          render?.(item) ?? item
-        )
-      )}
-    </tr>
   );
 }
 

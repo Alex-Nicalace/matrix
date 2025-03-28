@@ -1,13 +1,26 @@
 import { useState } from 'react';
 import classNames from 'classnames';
+import { useAppSelector } from '../../hooks/reduxHooks';
+import { selectAssets } from '../../features/assets/assetsSlice';
+import Button from '../UI/Button';
 import Container from '../Container';
 import Table from '../UI/Table';
 import { TAssetsDataProps } from './AssetsData.types';
 import './AssetsData.scss';
-import Button from '../UI/Button';
+
+const COLUMN_NAMES = [
+  { field: 'name', title: 'Актив' },
+  { field: 'quantity', title: 'Количество' },
+  { field: 'currentPrice', title: 'Цена' },
+  { field: 'purchasePrice', title: 'Общая стоимость' },
+  { field: 'change24h', title: 'Изм. за 24 ч.' },
+  { field: 'percentageOfPortfolio', title: '% портфеля' },
+];
 
 function AssetsData({ className, ...props }: TAssetsDataProps) {
   const [isCardView, setIsCardView] = useState(false);
+  const data = useAppSelector(selectAssets);
+
   return (
     <Container
       tag="main"
@@ -18,19 +31,10 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
 
       <Table
         className="assets-data__table"
-        columnNames={[
-          'Актив',
-          'Количество',
-          'Цена',
-          'Общая стоимость',
-          'Изм. за 24 ч.',
-          '% портфеля',
-        ]}
-        data={[
-          ['ETH', '10.00000', '1 913,58', '1 913,58', '0.00%', '0.00%'],
-          ['ETH', '10.00000', '1 913,58', '1 913,58', '0.00%', '0.00%'],
-        ]}
+        columnNames={COLUMN_NAMES}
+        data={data}
         isCardView={isCardView}
+        uniqueField="id"
       />
     </Container>
   );
