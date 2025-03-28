@@ -1,21 +1,22 @@
 import React, { HTMLAttributes } from 'react';
 
 type TRender<T> = (item: T) => React.ReactNode;
-type TTableSection = Omit<HTMLAttributes<HTMLTableSectionElement>, 'children'>;
 type TRow = Omit<HTMLAttributes<HTMLTableRowElement>, 'children'>;
 
-export type TTableProps = HTMLAttributes<HTMLTableElement>;
-export type TTheadProps<T extends React.ReactNode> = TTableSection & {
-  data: T[];
-  render?: TRender<T>;
-};
-export type TTbodyProps<T extends React.ReactNode> = TTableSection & {
+export type TTableProps<T extends React.ReactNode> = Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'children'
+> & {
+  columnNames?: T[];
+  renderCellHead?: TRender<T>;
   data: T[][];
-  render?: TRender<T>;
+  renderDataCell?: TRender<T>;
+  isCardView?: boolean;
 };
 
 export type TRowProps<T extends React.ReactNode> = TRow & {
-  data: T[];
   isHeadRow?: boolean;
+  data: T[];
+  columnNames?: T[] | null;
   render?: TRender<T>;
 };

@@ -1,54 +1,47 @@
 import { createElement } from 'react';
 import classNames from 'classnames';
-import {
-  TRowProps,
-  TTableProps,
-  TTbodyProps,
-  TTheadProps,
-} from './Table.types';
+import { TRowProps, TTableProps } from './Table.types';
 import './Table.scss';
 
-function Table({ children, className, ...props }: TTableProps) {
+function Table<T extends React.ReactNode>({
+  className,
+  columnNames,
+  renderCellHead,
+  data,
+  renderDataCell,
+  isCardView,
+  ...props
+}: TTableProps<T>) {
   return (
-    <div className="table">
-      <table className={classNames('table__table', className)} {...props}>
-        {children}
+    <div
+      className={classNames('table', isCardView && 'table_card', className)}
+      {...props}
+    >
+      <table className="table__table">
+        {columnNames?.length && (
+          <thead className="table__head">
+            <Row data={columnNames} isHeadRow render={renderCellHead} />
+          </thead>
+        )}
+        <tbody className="table__body">
+          {data.map((item, index) => (
+            <Row
+              key={index}
+              data={item}
+              render={renderDataCell}
+              columnNames={isCardView ? columnNames : null}
+            />
+          ))}
+        </tbody>
       </table>
     </div>
-  );
-}
-
-function Thead<T extends React.ReactNode>({
-  className,
-  data,
-  render,
-  ...props
-}: TTheadProps<T>) {
-  return (
-    <thead className={classNames('table__head', className)} {...props}>
-      <Row data={data} isHeadRow render={render} />
-    </thead>
-  );
-}
-
-function Tbody<T extends React.ReactNode>({
-  className,
-  data,
-  render,
-  ...props
-}: TTbodyProps<T>) {
-  return (
-    <tbody className={classNames('table__body', className)} {...props}>
-      {data.map((item, index) => (
-        <Row key={index} data={item} render={render} />
-      ))}
-    </tbody>
   );
 }
 
 function Row<T extends React.ReactNode>({
   className,
   data,
+  columnNames,
   isHeadRow,
   render,
   ...props
@@ -73,6 +66,7 @@ function Row<T extends React.ReactNode>({
               'table__cell',
               isHeadRow && 'table__cell_head'
             ),
+            'data-label': columnNames?.[index],
           },
           render?.(item) ?? item
         )
@@ -80,9 +74,5 @@ function Row<T extends React.ReactNode>({
     </tr>
   );
 }
-
-Table.Thead = Thead;
-Table.Tbody = Tbody;
-Table.Row = Row;
 
 export default Table;
