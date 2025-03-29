@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { useAppSelector } from '../../hooks/reduxHooks';
-import { selectAssets } from '../../features/assets/assetsSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import {
+  selectAssets,
+  startWebSocket,
+  stopWebSocket,
+} from '../../features/assets/assetsSlice';
 import Button from '../UI/Button';
 import Container from '../Container';
 import Table from '../UI/Table';
@@ -20,6 +24,15 @@ const COLUMN_NAMES = [
 function AssetsData({ className, ...props }: TAssetsDataProps) {
   const [isCardView, setIsCardView] = useState(false);
   const data = useAppSelector(selectAssets);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(startWebSocket(['bnbusdt', 'ethusdt']));
+
+    return () => {
+      dispatch(stopWebSocket());
+    };
+  }, [dispatch]);
 
   return (
     <Container
