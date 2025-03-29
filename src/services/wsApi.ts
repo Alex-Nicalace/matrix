@@ -15,8 +15,11 @@ export const connectWebSocket = (
 ) => {
   if (socket) return; // Избегаем повторных подключений
 
-  const streams = symbols.map((symbol) => `${symbol}@ticker`).join('/');
-  socket = new WebSocket(`${BINANCE_WS_URL}?streams=${streams}`);
+  const streams = symbols
+    .map((symbol) => `${symbol.toLowerCase()}@ticker`)
+    .join('/');
+  const url = `${BINANCE_WS_URL}?streams=${streams}`;
+  socket = new WebSocket(url);
 
   socket.onopen = () => console.log('WebSocket подключен');
   socket.onmessage = (event) => {

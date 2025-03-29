@@ -7,28 +7,18 @@ import {
 } from '../../services';
 import store from '../../store';
 
-const initialState: TAsset[] = [
-  {
-    id: 'b987ea65-277d-4ec7-9608-f81ddb47d743',
-    name: 'ETH',
-    symbol: 'ETHUSDT',
-    quantity: 10,
-    currentPrice: 1889.79,
-    purchasePrice: 1925.41,
-    change24h: -5.476,
-    percentageOfPortfolio: 66.75,
-  },
-  {
-    id: 'y987ea65-277d-4ec7-9608-f81ddb47d743',
-    name: 'BNB',
-    symbol: 'BNBUSDT',
-    quantity: 10,
-    currentPrice: 1889.79,
-    purchasePrice: 1925.41,
-    change24h: -5.476,
-    percentageOfPortfolio: 66.75,
-  },
-];
+const STORAGE_KEY = 'assets';
+
+function saveToStorage(assets: TAsset[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(assets));
+}
+
+function loadFromStorage(): TAsset[] {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+}
+
+const initialState: TAsset[] = loadFromStorage();
 
 const assetsSlice = createSlice({
   name: 'assets',
@@ -36,9 +26,12 @@ const assetsSlice = createSlice({
   reducers: {
     addAsset: (state, action: PayloadAction<TAsset>) => {
       state.push(action.payload);
+      saveToStorage(state);
     },
     removeAsset: (state, action: PayloadAction<string>) => {
-      return state.filter((asset) => asset.id !== action.payload);
+      const newState = state.filter((asset) => asset.id !== action.payload);
+      saveToStorage(newState);
+      return newState;
     },
     updateAssetPrice: (state, action: PayloadAction<TWebSocketMessage>) => {
       const asset = state.find((a) => a.symbol === action.payload.symbol);
@@ -53,8 +46,10 @@ const assetsSlice = createSlice({
         });
       }
     },
-    startWebSocket: (_, action: PayloadAction<string[]>) => {
-      connectWebSocket(action.payload, (data) => {
+    startWebSocket: (state) => {
+      disconnectWebSocket();
+      const symbols = state.map((a) => a.symbol);
+      connectWebSocket(symbols, (data) => {
         store.dispatch(assetsSlice.actions.updateAssetPrice(data));
       });
     },

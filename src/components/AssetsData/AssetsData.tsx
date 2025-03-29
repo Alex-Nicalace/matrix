@@ -23,11 +23,12 @@ const COLUMN_NAMES = [
 
 function AssetsData({ className, ...props }: TAssetsDataProps) {
   const [isCardView, setIsCardView] = useState(false);
-  const data = useAppSelector(selectAssets);
+  const assets = useAppSelector(selectAssets);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(startWebSocket(['bnbusdt', 'ethusdt']));
+    dispatch(startWebSocket());
 
     return () => {
       dispatch(stopWebSocket());
@@ -45,7 +46,7 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
       <Table
         className="assets-data__table"
         columnNames={COLUMN_NAMES}
-        data={data}
+        data={assets}
         isCardView={isCardView}
         uniqueField="id"
       />
