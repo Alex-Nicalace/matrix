@@ -48,7 +48,7 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
         columnNames={COLUMN_NAMES}
         data={assets}
         isCardView={isCardView}
-        uniqueField="id"
+        uniqueField="symbol"
       />
     </Container>
   );

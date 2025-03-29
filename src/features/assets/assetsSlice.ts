@@ -29,7 +29,7 @@ const assetsSlice = createSlice({
       saveToStorage(state);
     },
     removeAsset: (state, action: PayloadAction<string>) => {
-      const newState = state.filter((asset) => asset.id !== action.payload);
+      const newState = state.filter((asset) => asset.symbol !== action.payload);
       saveToStorage(newState);
       return newState;
     },
