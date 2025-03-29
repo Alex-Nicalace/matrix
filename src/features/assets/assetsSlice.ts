@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootStore, TAsset } from '../../types';
 import {
   connectWebSocket,
@@ -6,6 +6,7 @@ import {
   TWebSocketMessage,
 } from '../../services';
 import store from '../../store';
+import { formaterCurrency, formaterPercent } from '../../utils';
 
 const STORAGE_KEY = 'assets';
 
@@ -68,3 +69,16 @@ export default assetsSlice.reducer;
 
 // экспорт селекторов
 export const selectAssets = (state: RootStore) => state.assets;
+// селектор с форматированными данными
+export const selectAssetsFormattedData = createSelector(
+  selectAssets,
+  (assets) => {
+    return assets.map((asset) => ({
+      ...asset,
+      currentPrice: formaterCurrency(asset.currentPrice),
+      purchasePrice: formaterCurrency(asset.purchasePrice),
+      change24h: formaterPercent(asset.change24h),
+      percentageOfPortfolio: formaterPercent(asset.percentageOfPortfolio),
+    }));
+  }
+);

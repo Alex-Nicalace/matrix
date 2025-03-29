@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import {
-  selectAssets,
+  selectAssetsFormattedData,
   startWebSocket,
   stopWebSocket,
 } from '../../features/assets/assetsSlice';
@@ -23,7 +23,7 @@ const COLUMN_NAMES = [
 
 function AssetsData({ className, ...props }: TAssetsDataProps) {
   const [isCardView, setIsCardView] = useState(false);
-  const assets = useAppSelector(selectAssets);
+  const assets = useAppSelector(selectAssetsFormattedData);
 
   const dispatch = useAppDispatch();
 
