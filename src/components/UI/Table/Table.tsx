@@ -8,6 +8,7 @@ function Table({
   data,
   isCardView,
   uniqueField,
+  renderCell,
   ...props
 }: TTableProps) {
   return (
@@ -34,7 +35,7 @@ function Table({
                   className="table__cell"
                   data-label={isCardView ? col.title ?? col.field : null}
                 >
-                  {row[col.field]}
+                  {renderCell ? renderCell(row, col.field) : row[col.field]}
                 </td>
               ))}
             </tr>

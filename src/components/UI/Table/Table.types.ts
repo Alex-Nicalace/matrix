@@ -10,4 +10,8 @@ export type TTableProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
   data: Record<string, number | string>[];
   isCardView?: boolean;
   uniqueField: string;
+  renderCell?: (
+    row: Record<string, number | string>,
+    fieldName: string
+  ) => React.ReactNode;
 };

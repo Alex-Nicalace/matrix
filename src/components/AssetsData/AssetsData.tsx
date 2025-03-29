@@ -49,6 +49,16 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
         data={assets}
         isCardView={isCardView}
         uniqueField="symbol"
+        renderCell={(row, fieldName) => {
+          if (fieldName !== 'change24h') return row[fieldName];
+
+          const isNegative = parseFloat(row[fieldName] as string) < 0;
+          return (
+            <span style={{ color: isNegative ? 'red' : 'green' }}>
+              {row[fieldName]}
+            </span>
+          );
+        }}
       />
     </Container>
   );
