@@ -1,0 +1,26 @@
+.input {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: rem(1);
+    background-color: black;
+  }
+
+  &:focus-within {
+    &::after {
+      height: rem(2);
+    }
+  }
+  // .input__input
+  &__input {
+    width: 100%;
+    padding: rem(10) 0;
+    // border-bottom: rem(1) solid black;
+    outline: none;
+  }
+}
