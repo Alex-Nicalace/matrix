@@ -1,0 +1,125 @@
+.dialog {
+  $duration: 0.6s;
+  // .dialog__content
+  &__content {
+    background-color: var(--white);
+    overflow-y: auto;
+
+    transition: all var(--dialog-duration-transition, $duration) ease 0s;
+  }
+  // .dialog_opened
+  &_opened {
+    &.dialog {
+      &_trans-effect {
+        &_fade {
+          &::backdrop {
+            background-color: rgba(0, 0, 0, 0.75);
+          }
+          .dialog {
+            // .dialog__content
+            &__content {
+              opacity: 1;
+            }
+          }
+        }
+
+        &_left {
+          .dialog {
+            // .dialog__content
+            &__content {
+              transform: translateX(0);
+            }
+          }
+        }
+      }
+
+      &_mode {
+        &_popup {
+          &::before {
+            background-color: rgba(0, 0, 0, 0.8);
+          }
+        }
+      }
+    }
+  }
+  // .dialog_full-height
+  &_full-height {
+    .dialog__content {
+      height: 100%;
+    }
+  }
+  // .dialog_full-width
+  &_full-width {
+    .dialog__content {
+      width: 100%;
+    }
+  }
+  // .dialog_full-height.dialog_full-width
+  &_full-height.dialog_full-width {
+    &::before {
+      content: normal;
+    }
+  }
+  // .dialog_trans-effect
+  &_trans-effect {
+    // .dialog_trans-effect_left
+    &_left {
+      .dialog {
+        &__content {
+          transform: translateX(-100%);
+        }
+      }
+    }
+    // .dialog_trans-effect_fade
+    &_fade {
+      .dialog {
+        &__content {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  // .dialog_mode
+  &_mode {
+    // .dialog_mode_dialog
+    &_popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: transparent;
+      z-index: 9;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        z-index: -1;
+        transition: background-color
+          var(--dialog-duration-transition, $duration) ease 0s;
+      }
+      .dialog {
+        &__content {
+          width: percent(320, 414);
+          min-width: rem(320);
+          @include adaptiveValue('padding-top', 87, 75, 992, 320, 1);
+        }
+      }
+    }
+    // .dialog_mode_modal
+    &_modal {
+      margin: auto;
+      background-color: transparent;
+      &::backdrop {
+        background-color: transparent;
+        transition: background-color
+          var(--dialog-duration-transition, $duration) ease 0s;
+      }
+    }
+  }
+}
