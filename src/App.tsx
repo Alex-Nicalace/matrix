@@ -1,12 +1,15 @@
 import Header from './components/Header';
 import './App.scss';
 import AssetsData from './components/AssetsData';
+import Dialog from './components/Dialog';
 
 function App() {
   return (
     <div className="app">
-      <Header />
-      <AssetsData />
+      <Dialog>
+        <Header />
+        <AssetsData />
+      </Dialog>
     </div>
   );
 }

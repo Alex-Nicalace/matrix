@@ -11,6 +11,7 @@ import Container from '../Container';
 import Table from '../UI/Table';
 import { TAssetsDataProps } from './AssetsData.types';
 import './AssetsData.scss';
+import Dialog from '../Dialog';
 
 const COLUMN_NAMES = [
   { field: 'name', title: 'Актив' },
@@ -59,6 +60,18 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
             </span>
           );
         }}
+      />
+      <Dialog.Window
+        windowName="addActive"
+        mode="modal"
+        transitionEffect={['fade']}
+        render={(close) => (
+          <div>
+            <h1>Register</h1>
+            <button onClick={close}>Close</button>
+          </div>
+        )}
+        onClickOutside={(close) => close()}
       />
     </Container>
   );
