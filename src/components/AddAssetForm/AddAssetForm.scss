@@ -1,0 +1,26 @@
+.add-asset-form {
+  display: grid;
+  row-gap: rem(30);
+  // .add-asset-form__symbol
+  &__symbol {
+  }
+  // .add-asset-form__symbols
+  &__symbols {
+  }
+  // .add-asset-form__box
+  &__box {
+    display: grid;
+    row-gap: rem(20);
+  }
+  // .add-asset-form__symbol-value
+  &__symbol-value {
+  }
+  // .add-asset-form__quantity
+  &__quantity {
+  }
+  // .add-asset-form__buttons
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+}

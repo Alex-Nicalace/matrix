@@ -1,8 +1,10 @@
 .dialog {
+  max-width: rem(400);
+  padding: rem(40);
   $duration: 0.6s;
+  border-radius: rem(20);
   // .dialog__content
   &__content {
-    background-color: var(--white);
     overflow-y: auto;
 
     transition: all var(--dialog-duration-transition, $duration) ease 0s;
@@ -114,7 +116,6 @@
     // .dialog_mode_modal
     &_modal {
       margin: auto;
-      background-color: transparent;
       &::backdrop {
         background-color: transparent;
         transition: background-color
