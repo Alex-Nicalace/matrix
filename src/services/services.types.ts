@@ -9,3 +9,9 @@ export type TWebSocketResponse = {
   c: string;
   P: string;
 };
+
+export type TAvailableAssetsResponse = {
+  symbol: string;
+  lastPrice: string;
+  priceChangePercent: string;
+};
