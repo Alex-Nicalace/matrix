@@ -1,0 +1,21 @@
+.spinner {
+  width: rem(50);
+  margin: rem(70) auto;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: rem(4) solid gray;
+  border-top-color: black;
+  animation: spinner 1s linear infinite;
+
+  &_vertical_center {
+    margin: auto;
+  }
+}
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
