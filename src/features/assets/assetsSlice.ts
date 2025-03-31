@@ -110,3 +110,12 @@ export const addAssetWithWebSocket = createAsyncThunk(
     dispatch(startWebSocket());
   }
 );
+
+export const removeAssetWithWebSocket = createAsyncThunk(
+  'assets/addAssetWithWebSocket',
+  async (id: string, { dispatch }) => {
+    dispatch(stopWebSocket());
+    dispatch(removeAsset(id));
+    dispatch(startWebSocket());
+  }
+);
