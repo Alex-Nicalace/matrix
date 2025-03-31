@@ -1,7 +1,7 @@
 .dialog {
-  padding: rem(40);
   $duration: 0.6s;
   border-radius: rem(20);
+  @include adaptiveValue('padding', 40, 10);
   // .dialog__content
   &__content {
     overflow-y: auto;

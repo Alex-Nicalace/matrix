@@ -8,6 +8,10 @@
   line-height: 100%;
   transition: background-color 0.3s ease 0s;
 
+  @include adaptiveValue('padding-block', 18, 9);
+  @include adaptiveValue('padding-inline', 24, 12);
+  @include adaptiveValue('font-size', 18, 14);
+
   @media (any-hover: hover) {
     &:hover {
       background-color: rgba(215, 85, 85, 1);

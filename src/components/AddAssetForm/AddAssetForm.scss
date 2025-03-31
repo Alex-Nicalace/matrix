@@ -1,7 +1,8 @@
 .add-asset-form {
   display: grid;
-  row-gap: rem(30);
   max-width: rem(300);
+  @include adaptiveValue('row-gap', 30, 15);
+  @include adaptiveValue('font-size', 16, 14);
   // .add-asset-form__symbol
   &__symbol {
   }
@@ -18,7 +19,7 @@
   // .add-asset-form__box
   &__box {
     display: grid;
-    row-gap: rem(20);
+    @include adaptiveValue('row-gap', 20, 10);
   }
   // .add-asset-form__symbol-value
   &__symbol-value {

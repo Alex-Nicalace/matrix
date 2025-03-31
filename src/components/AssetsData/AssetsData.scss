@@ -1,4 +1,6 @@
 .assets-data {
+  padding-block: rem(40);
+  @include adaptiveValue('font-size', 16, 14);
   // .assets-data__table
   &__table {
     max-width: rem(1440);
