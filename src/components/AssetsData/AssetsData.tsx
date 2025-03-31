@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import {
+  removeAssetWithWebSocket,
   selectAssetsFormattedData,
   startWebSocket,
   stopWebSocket,
 } from '../../features/assets/assetsSlice';
-import Button from '../UI/Button';
+import useMatchMedia from '../../hooks/useMatchMedia';
 import Container from '../Container';
 import Table from '../UI/Table';
 import { TAssetsDataProps } from './AssetsData.types';
@@ -21,11 +22,15 @@ const COLUMN_NAMES = [
   { field: 'percentageOfPortfolio', title: '% портфеля' },
 ];
 
-function AssetsData({ className, ...props }: TAssetsDataProps) {
-  const [isCardView, setIsCardView] = useState(false);
-  const assets = useAppSelector(selectAssetsFormattedData);
+const MEDIA_QUERIES = ['(max-width: 767.98px)'];
 
+function AssetsData({ className, ...props }: TAssetsDataProps) {
+  const [viewTable, setViewTable] = useState<'classic' | 'card'>('classic');
+  const assets = useAppSelector(selectAssetsFormattedData);
   const dispatch = useAppDispatch();
+  const [isLess768] = useMatchMedia(MEDIA_QUERIES);
+
+  const isExistsAssets = assets.length > 0;
 
   useEffect(() => {
     dispatch(startWebSocket());
@@ -35,31 +40,68 @@ function AssetsData({ className, ...props }: TAssetsDataProps) {
     };
   }, [dispatch]);
 
+  function handleRemoveAsset(id: string) {
+    dispatch(removeAssetWithWebSocket(id));
+  }
+
+  function handleToggleView(e: React.ChangeEvent<HTMLInputElement>) {
+    setViewTable(e.target.value as 'classic' | 'card');
+  }
+
   return (
     <Container
       tag="main"
       className={classNames('assets-data', className)}
       {...props}
     >
-      <Button onClick={() => setIsCardView(!isCardView)}>Вид таблицы</Button>
+      {isExistsAssets && isLess768 && (
+        <div className="assets-data__view">
+          <label>
+            <input
+              type="radio"
+              name="view"
+              value="classic"
+              checked={viewTable === 'classic'}
+              onChange={handleToggleView}
+            />
+            Классический вид
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="view"
+              value="card"
+              checked={viewTable === 'card'}
+              onChange={handleToggleView}
+            />
+            Карточный вид
+          </label>
+        </div>
+      )}
 
-      <Table
-        className="assets-data__table"
-        columnNames={COLUMN_NAMES}
-        data={assets}
-        isCardView={isCardView}
-        uniqueField="symbol"
-        renderCell={(row, fieldName) => {
-          if (fieldName !== 'change24h') return row[fieldName];
-
-          const isNegative = parseFloat(row[fieldName] as string) < 0;
-          return (
-            <span style={{ color: isNegative ? 'red' : 'green' }}>
-              {row[fieldName]}
-            </span>
-          );
-        }}
-      />
+      {isExistsAssets ? (
+        <Table
+          className="assets-data__table"
+          columnNames={COLUMN_NAMES}
+          data={assets}
+          isCardView={viewTable === 'card'}
+          uniqueField="symbol"
+          onClickCellData={(row) => handleRemoveAsset(String(row.symbol))}
+          renderCell={(row, fieldName) => {
+            if (fieldName !== 'change24h') return row[fieldName];
+            const isNegative = parseFloat(row[fieldName] as string) < 0;
+            return (
+              <span style={{ color: isNegative ? 'red' : 'green' }}>
+                {row[fieldName]}
+              </span>
+            );
+          }}
+        />
+      ) : (
+        <div className="assets-data__empty">
+          Нет активов в вашем портфеле. Добавьте что-нибудь, чтобы начать!
+        </div>
+      )}
     </Container>
   );
 }
