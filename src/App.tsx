@@ -1,8 +1,8 @@
 import Header from './components/Header';
 import './App.scss';
-import AssetsData from './components/AssetsData';
+import AssetsData from './features/assets/AssetsData';
 import Dialog from './components/Dialog';
-import AddAssetForm from './components/AddAssetForm';
+import AddAssetForm from './features/availableAssets/AddAssetForm';
 
 function App() {
   return (

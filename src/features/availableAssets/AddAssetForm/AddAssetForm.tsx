@@ -1,16 +1,16 @@
 import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import {
   fetchAvailableAssets,
   selectAvailableAssetsFormattedData,
-} from '../../features/availableAssets/availableAssetsSlice';
-import { addAssetWithWebSocket } from '../../features/assets/assetsSlice';
+} from '../availableAssetsSlice';
+import { addAssetWithWebSocket } from '../../assets/assetsSlice';
 
-import Input from '../UI/Input';
-import Button from '../UI/Button';
-import Table from '../UI/Table';
-import Spinner from '../Spinner';
+import Input from '../../../components/UI/Input';
+import Button from '../../../components/UI/Button';
+import Table from '../../../components/UI/Table';
+import Spinner from '../../../components/UI/Spinner';
 
 import { TAddAssetFormProps, TSelectedAsset } from './AddAssetForm.types';
 import './AddAssetForm.scss';

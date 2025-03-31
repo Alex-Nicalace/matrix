@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import {
   removeAssetWithWebSocket,
   selectAssetsFormattedData,
   startWebSocket,
   stopWebSocket,
-} from '../../features/assets/assetsSlice';
-import useMatchMedia from '../../hooks/useMatchMedia';
-import Container from '../Container';
-import Table from '../UI/Table';
+} from '../assetsSlice';
+import useMatchMedia from '../../../hooks/useMatchMedia';
+import Container from '../../../components/Container';
+import Table from '../../../components/UI/Table';
 import { TAssetsDataProps } from './AssetsData.types';
 import './AssetsData.scss';
 
