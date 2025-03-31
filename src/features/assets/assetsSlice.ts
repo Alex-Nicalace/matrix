@@ -1,4 +1,9 @@
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSelector,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { RootStore, TAsset } from '../../types';
 import {
   connectWebSocket,
@@ -25,9 +30,22 @@ const assetsSlice = createSlice({
   name: 'assets',
   initialState,
   reducers: {
-    addAsset: (state, action: PayloadAction<TAsset>) => {
-      state.push(action.payload);
-      saveToStorage(state);
+    addAsset: (
+      state,
+      action: PayloadAction<Pick<TAsset, 'symbol' | 'quantity' | 'name'>>
+    ) => {
+      const asset = state.find((a) => a.symbol === action.payload.symbol);
+      if (!asset) {
+        state.push({
+          ...action.payload,
+          currentPrice: 0,
+          change24h: 0,
+          percentageOfPortfolio: 0,
+          purchasePrice: 0,
+        });
+      } else {
+        asset.quantity += action.payload.quantity;
+      }
     },
     removeAsset: (state, action: PayloadAction<string>) => {
       const newState = state.filter((asset) => asset.symbol !== action.payload);
@@ -46,6 +64,7 @@ const assetsSlice = createSlice({
           a.percentageOfPortfolio = (a.purchasePrice / totalCost) * 100;
         });
       }
+      saveToStorage(state);
     },
     startWebSocket: (state) => {
       disconnectWebSocket();
@@ -80,5 +99,14 @@ export const selectAssetsFormattedData = createSelector(
       change24h: formaterPercent(asset.change24h),
       percentageOfPortfolio: formaterPercent(asset.percentageOfPortfolio),
     }));
+  }
+);
+
+export const addAssetWithWebSocket = createAsyncThunk(
+  'assets/addAssetWithWebSocket',
+  async (asset: Pick<TAsset, 'symbol' | 'quantity' | 'name'>, { dispatch }) => {
+    dispatch(stopWebSocket());
+    dispatch(addAsset(asset));
+    dispatch(startWebSocket());
   }
 );
