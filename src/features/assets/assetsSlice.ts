@@ -69,6 +69,7 @@ const assetsSlice = createSlice({
     startWebSocket: (state) => {
       disconnectWebSocket();
       const symbols = state.map((a) => a.symbol);
+      if (symbols.length === 0) return;
       connectWebSocket(symbols, (data) => {
         store.dispatch(assetsSlice.actions.updateAssetPrice(data));
       });
