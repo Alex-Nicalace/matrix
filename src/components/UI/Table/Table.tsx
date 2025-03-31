@@ -9,6 +9,7 @@ function Table({
   isCardView,
   uniqueField,
   renderCell,
+  onClickCellData,
   ...props
 }: TTableProps) {
   return (
@@ -34,6 +35,7 @@ function Table({
                   key={col.field}
                   className="table__cell"
                   data-label={isCardView ? col.title ?? col.field : null}
+                  onClick={() => onClickCellData?.(row, col.field)}
                 >
                   {renderCell ? renderCell(row, col.field) : row[col.field]}
                 </td>

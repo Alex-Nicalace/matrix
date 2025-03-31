@@ -20,6 +20,13 @@
   }
   // .table__row
   &__row {
+    &:not(.table__row_head) {
+      cursor: pointer;
+      transition: background-color 0.3s ease 0s;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
     // .table__row_head
     &_head {
     }

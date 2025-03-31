@@ -14,4 +14,8 @@ export type TTableProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
     row: Record<string, number | string>,
     fieldName: string
   ) => React.ReactNode;
+  onClickCellData?: (
+    row: Record<string, number | string>,
+    fieldName: string
+  ) => void;
 };
