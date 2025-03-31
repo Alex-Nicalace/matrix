@@ -1,12 +1,13 @@
 .add-asset-form {
   display: grid;
   row-gap: rem(30);
+  max-width: rem(300);
   // .add-asset-form__symbol
   &__symbol {
   }
   // .add-asset-form__symbols
   &__symbols {
-    max-height: rem(400);
+    height: rem(300);
     font-size: rem(14);
     .table {
       &__cell {
@@ -21,6 +22,10 @@
   }
   // .add-asset-form__symbol-value
   &__symbol-value {
+    display: flex;
+    justify-content: center;
+    column-gap: rem(10);
+    font-weight: 900;
   }
   // .add-asset-form__quantity
   &__quantity {

@@ -1,15 +1,18 @@
-import { useEffect } from 'react';
+import { useDeferredValue, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import {
   fetchAvailableAssets,
   selectAvailableAssetsFormattedData,
 } from '../../features/availableAssets/availableAssetsSlice';
+import { addAssetWithWebSocket } from '../../features/assets/assetsSlice';
+
 import Input from '../UI/Input';
 import Button from '../UI/Button';
 import Table from '../UI/Table';
 import Spinner from '../Spinner';
-import { TAddAssetFormProps } from './AddAssetForm.types';
+
+import { TAddAssetFormProps, TSelectedAsset } from './AddAssetForm.types';
 import './AddAssetForm.scss';
 
 const COLUMN_NAMES = [
@@ -21,23 +24,69 @@ const COLUMN_NAMES = [
 function AddAssetForm({ className, closeForm, ...props }: TAddAssetFormProps) {
   const dispatch = useAppDispatch();
   const { status, data } = useAppSelector(selectAvailableAssetsFormattedData);
+  const [searchSymbol, setSearchSymbol] = useState('');
+  const deferredSymbol = useDeferredValue(searchSymbol);
+  const filteredAssets = useMemo(() => {
+    return deferredSymbol === ''
+      ? data
+      : data.filter((asset) =>
+          asset.baseAsset.toLowerCase().includes(deferredSymbol.toLowerCase())
+        );
+  }, [deferredSymbol, data]);
+  const [selectedAsset, setSelectedAsset] = useState<TSelectedAsset | null>(
+    null
+  );
+  const [quantity, setQuantity] = useState('');
 
   useEffect(() => {
     dispatch(fetchAvailableAssets());
   }, [dispatch]);
 
+  function handleClickCellData(row: Record<string, string | number>) {
+    setSelectedAsset({
+      name: row.baseAsset.toString(),
+      lastPrice: row.lastPrice.toString(),
+      symbol: row.symbol.toString(),
+    });
+  }
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (selectedAsset && quantity) {
+      dispatch(
+        addAssetWithWebSocket({ ...selectedAsset, quantity: +quantity })
+      );
+
+      closeForm?.();
+    }
+  }
+
   return (
-    <form className={classNames('add-asset-form', className)} {...props}>
-      <Input className="add-asset-form__symbol" placeholder="Поиск символа" />
+    <form
+      className={classNames('add-asset-form', className)}
+      onSubmit={handleSubmit}
+      {...props}
+    >
+      <Input
+        className="add-asset-form__symbol"
+        placeholder="Поиск символа"
+        value={searchSymbol}
+        onChange={(e) => setSearchSymbol(e.target.value)}
+      />
 
-      {status === 'loading' && <Spinner className="add-asset-form__symbols" />}
+      {status === 'loading' && (
+        <div className="add-asset-form__symbols">
+          <Spinner />
+        </div>
+      )}
 
-      {status === 'succeeded' && data.length > 0 && (
+      {status === 'succeeded' && (
         <Table
           className="add-asset-form__symbols"
           columnNames={COLUMN_NAMES}
-          data={data}
+          data={filteredAssets}
           uniqueField="symbol"
+          onClickCellData={handleClickCellData}
           renderCell={(row, fieldName) => {
             if (fieldName !== 'priceChangePercent') return row[fieldName];
 
@@ -57,20 +106,29 @@ function AddAssetForm({ className, closeForm, ...props }: TAddAssetFormProps) {
         </div>
       )}
 
-      <div className="add-asset-form__box">
-        <div className="add-asset-form__symbol-value">qweerty</div>
-        <Input
-          className="add-asset-form__quantity"
-          placeholder="Количество"
-          type="number"
-        />
-        <div className="add-asset-form__buttons">
-          <Button>добавить</Button>
-          <Button onClick={closeForm} type="button">
-            отмена
-          </Button>
+      {selectedAsset && (
+        <div className="add-asset-form__box">
+          <div className="add-asset-form__symbol-value">
+            <span>{selectedAsset.name}</span>
+            <span>{selectedAsset.lastPrice}</span>
+          </div>
+          <Input
+            className="add-asset-form__quantity"
+            placeholder="Количество"
+            type="number"
+            required
+            value={quantity}
+            min={1}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+          <div className="add-asset-form__buttons">
+            <Button>добавить</Button>
+            <Button onClick={closeForm} type="button">
+              отмена
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </form>
   );
 }
